@@ -3,6 +3,7 @@ import express from 'express';
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import {check, validationResult} from "express-validator";
+import verifyToken from '../middlewares/auth.js';
 const router = express.Router();
 
 router.post("/login", [
@@ -39,6 +40,11 @@ router.post("/logout", async(req,res) => {
         expires: new Date(0),
     });
     res.status(201).json({message : "User LogOut"})
+});
+
+
+router.get("/validate-token", verifyToken, (req,res) => {
+    res.status(200).send({userId: req.userId});
 })
 
 export default router;
